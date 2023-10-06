@@ -5,6 +5,9 @@ const styles = StyleSheet.create({
   container: {
     paddingTop: 12,
   },
+  input: {
+    width: "88%",
+  },
   title: {
     color: colors.white,
     fontSize: 18,

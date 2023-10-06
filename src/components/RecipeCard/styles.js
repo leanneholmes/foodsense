@@ -10,8 +10,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     padding: 10,
     width: width * 0.6,
-    marginVertical: 16,
-    marginTop: 46,
+    marginTop: 36,
+    marginBottom: 30,
+    marginRight: 16,
     // iOS
     shadowColor: "#000",
     shadowOffset: {

@@ -6,7 +6,7 @@ import styles from "./styles";
 const Search = ({}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Input />
+      <Input style={styles.input} />
     </SafeAreaView>
   );
 };
