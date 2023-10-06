@@ -4,6 +4,7 @@ import styles from "./styles";
 import Input from "../../components/Input";
 import Title from "../../components/Title";
 import Category from "../../components/Category";
+import RecipeCard from "../../components/RecipeCard";
 
 const Home = ({ navigation }) => {
   return (
@@ -16,6 +17,16 @@ const Home = ({ navigation }) => {
       />
       <View style={styles.container}>
         <Title text="Featured recipes" />
+
+        <RecipeCard
+          title="Steak with tomato sauce and bulgur rice."
+          author={{
+            name: "James Milner",
+            image:
+              "https://www.stockvault.net//data/2013/09/14/147895/thumb16.jpg",
+          }}
+          time="20 mins"
+        />
         <Category
           categories={["All", "Trending"]}
           selectedCategory="All"

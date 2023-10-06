@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
     color: colors.green,
     fontWeight: "bold",
     padding: 8,
-    paddingHorizontal: 12,
+    paddingHorizontal: 16,
   },
   selectedItem: {
     color: colors.white,

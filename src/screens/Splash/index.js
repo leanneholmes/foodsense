@@ -8,7 +8,7 @@ const Splash = ({ navigation }) => {
     <View style={styles.container}>
       <ImageBackground
         style={{ width: "100%", height: "100%" }}
-        source={require("../../../assets/splash.png")}
+        source={require("../../../assets/splashBackground.png")}
       >
         <Button onPress={() => navigation.navigate("Home")}>
           Start Cooking
