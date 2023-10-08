@@ -7,6 +7,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./src/screens/Home";
 import Search from "./src/screens/Search";
 import { getRecipesList } from "./src/http";
+import RecipeDetails from "./src/screens/RecipeDetails";
 
 const Stack = createStackNavigator();
 export const RecipesContext = React.createContext();
@@ -76,6 +77,14 @@ export default function App() {
               name="Search"
               component={Search}
               options={{ headerLeft: (props) => <BackButton {...props} /> }}
+            />
+            <Stack.Screen
+              name="RecipeDetails"
+              component={RecipeDetails}
+              options={{
+                headerLeft: (props) => <BackButton {...props} />,
+                title: "",
+              }}
             />
           </Stack.Navigator>
         </NavigationContainer>

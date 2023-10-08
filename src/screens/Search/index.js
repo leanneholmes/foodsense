@@ -15,7 +15,7 @@ const getRating = () => {
   return Math.random() * 2 + 3;
 };
 
-const Search = ({}) => {
+const Search = ({ navigation }) => {
   const { recipes } = useContext(RecipesContext);
   const [filteredRecipes, setFilteredRecipes] = useState([]);
   const [keyword, setKeyword] = useState("");
@@ -47,6 +47,7 @@ const Search = ({}) => {
           keyExtractor={(item) => String(item?.id)}
           renderItem={({ item, index }) => (
             <Card
+              onPress={() => navigation.navigate("Recipe Details", { item })}
               style={styles.result}
               title={item?.name}
               time={20 + item?.cook_time_minutes + " mins"}

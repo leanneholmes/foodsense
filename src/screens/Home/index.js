@@ -56,6 +56,7 @@ const Home = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item, index }) => (
             <RecipeCard
+              onPress={() => navigation.navigate("RecipeDetails", { item })}
               style={index === 0 ? { marginLeft: 24 } : {}}
               title={item?.name}
               time={20 + item?.cook_time_minutes + " mins"}
@@ -86,6 +87,7 @@ const Home = ({ navigation }) => {
           showsHorizontalScrollIndicator={false}
           renderItem={({ item, index }) => (
             <Card
+              onPress={() => navigation.navigate("RecipeDetails", { item })}
               style={index === 0 ? { marginLeft: 24 } : {}}
               title={item?.name}
               time={20 + item?.cook_time_minutes + " mins"}
