@@ -47,7 +47,7 @@ const Search = ({ navigation }) => {
           keyExtractor={(item) => String(item?.id)}
           renderItem={({ item, index }) => (
             <Card
-              onPress={() => navigation.navigate("Recipe Details", { item })}
+              onPress={() => navigation.navigate("RecipeDetails", { item })}
               style={styles.result}
               title={item?.name}
               time={20 + item?.cook_time_minutes + " mins"}
