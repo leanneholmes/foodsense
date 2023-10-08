@@ -12,13 +12,13 @@ const RecipeCard = ({ title, style, image, author, rating, time }) => {
             {title}
           </Text>
 
-          <Rating rating={4.4} />
+          <Rating rating={rating} />
         </View>
 
         <Image
           style={styles.image}
           source={{
-            uri: "https://images.immediate.co.uk/production/volatile/sites/30/2013/05/Puttanesca-fd5810c.jpg",
+            uri: image,
           }}
         />
       </View>

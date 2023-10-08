@@ -7,6 +7,16 @@ import Input from "../../components/Input";
 import RecipeCard from "../../components/RecipeCard";
 import Title from "../../components/Title";
 import styles from "./styles";
+import avatars from "../../../assets/data/avatars.json";
+import cooks from "../../../assets/data/cooks.json";
+
+const getAvatarIndex = () => {
+  return Math.floor(Math.random() * 13);
+};
+
+const getRating = () => {
+  return Math.random() * 2 + 3;
+};
 
 const Home = ({ navigation }) => {
   const [tags, setTags] = useState([]);
@@ -38,7 +48,6 @@ const Home = ({ navigation }) => {
       />
       <View style={styles.container}>
         <Title text="Featured Recipes" />
-
         <FlatList
           horizontal
           data={featuredRecipes}
@@ -49,14 +58,14 @@ const Home = ({ navigation }) => {
             <RecipeCard
               style={index === 0 ? { marginLeft: 24 } : {}}
               title={item?.name}
-              time={item?.cook_time_minutes}
+              time={20 + item?.cook_time_minutes + " mins"}
               image={item?.thumbnail_url}
-              rating={item?.user_ratings?.score}
+              rating={getRating()}
               author={
                 item?.credits?.length
                   ? {
-                      name: item?.credits[0]?.name,
-                      image: item?.credits[0]?.image_url,
+                      name: cooks[index],
+                      image: avatars[index],
                     }
                   : null
               }
@@ -69,7 +78,6 @@ const Home = ({ navigation }) => {
           selectedCategory={selectedTag}
           onCategoryPress={setSelectedTag}
         />
-
         <FlatList
           horizontal
           data={recipes}
@@ -80,14 +88,15 @@ const Home = ({ navigation }) => {
             <Card
               style={index === 0 ? { marginLeft: 24 } : {}}
               title={item?.name}
+              time={20 + item?.cook_time_minutes + " mins"}
               servings={item?.num_servings}
               image={item?.thumbnail_url}
               rating={item?.user_ratings?.score}
               author={
                 item?.credits?.length
                   ? {
-                      name: item?.credits[0]?.name,
-                      image: item?.credits[0]?.image_url,
+                      name: cooks[getAvatarIndex()],
+                      image: avatars[getAvatarIndex()],
                     }
                   : null
               }

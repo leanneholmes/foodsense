@@ -34,7 +34,7 @@ export default function App() {
 
   useEffect(() => {
     (async () => {
-      const rec = await handleRecipesFetch(null, "15");
+      const rec = await handleRecipesFetch("special_occasion", "15");
       setRecipes(rec);
       const featuredRec = await handleRecipesFetch("halloween", "5");
       setFeaturedRecipes(featuredRec);

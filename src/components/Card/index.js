@@ -6,12 +6,7 @@ import styles from "./styles";
 const Card = ({ title, style, image, time }) => {
   return (
     <View style={[styles.container, style]}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: "https://images.immediate.co.uk/production/volatile/sites/30/2013/05/Puttanesca-fd5810c.jpg",
-        }}
-      />
+      <Image style={styles.image} source={{ uri: image }} />
       <Text numberOfLines={3} style={styles.title}>
         {title}
       </Text>
