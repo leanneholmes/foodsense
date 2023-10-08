@@ -12,13 +12,19 @@ const styles = StyleSheet.create({
     marginTop: 60,
     marginVertical: 32,
     marginRight: 16,
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  lower: {
+    paddingBottom: 3,
   },
   title: {
     fontSize: 14,
     color: colors.grey,
     fontWeight: "bold",
     textAlign: "center",
-    marginVertical: 16,
+    marginTop: 16,
+    marginBottom: 12,
   },
   label: {
     color: colors.lightGrey2,

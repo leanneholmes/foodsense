@@ -6,12 +6,16 @@ import styles from "./styles";
 const Card = ({ title, style, image, time }) => {
   return (
     <View style={[styles.container, style]}>
-      <Image style={styles.image} source={{ uri: image }} />
-      <Text numberOfLines={3} style={styles.title}>
-        {title}
-      </Text>
-      <Text style={styles.label}>Time</Text>
-      <Text style={styles.value}>{time}</Text>
+      <View style={styles.upper}>
+        <Image style={styles.image} source={{ uri: image }} />
+        <Text numberOfLines={3} style={styles.title}>
+          {title}
+        </Text>
+      </View>
+      <View style={styles.lower}>
+        <Text style={styles.label}>Time</Text>
+        <Text style={styles.value}>{time}</Text>
+      </View>
     </View>
   );
 };
