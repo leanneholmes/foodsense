@@ -1,5 +1,7 @@
-import { StatusBar } from "expo-status-bar";
-import { Image, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
+import { useEffect } from "react";
+import { getRecipesList } from "./src/http";
+import { Image, Pressable, StyleSheet } from "react-native";
 import Splash from "./src/screens/Splash";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import "react-native-gesture-handler";
@@ -8,6 +10,8 @@ import Home from "./src/screens/Home";
 import Search from "./src/screens/Search";
 
 const Stack = createStackNavigator();
+export const RecipesContext = React.createContext();
+export const FeaturedRecipesContext = React.createContext();
 
 const BackButton = (props) => {
   return (
@@ -26,31 +30,58 @@ const theme = {
 };
 
 export default function App() {
+  const [recipes, setRecipes] = useState();
+  const [featuredRecipes, setFeaturedRecipes] = useState();
+  useEffect(() => {
+    (async () => {
+      const rec = await handleRecipesFetch("healthy", "1");
+      console.log("Recipes from APP.JS ", rec);
+      setRecipes(rec);
+      const featuredRec = await handleRecipesFetch("halloween", "5");
+      console.log("Featured recipes", featuredRec);
+      setFeaturedRecipes(featuredRec);
+    })();
+  }, []);
+
+  const handleRecipesFetch = async (tags, size) => {
+    try {
+      const recipes = await getRecipesList(tags, size);
+      setRecipes(recipes?.data?.results);
+    } catch (e) {
+      console.log("Error fetching recipes ", e);
+    }
+  };
   return (
-    <NavigationContainer theme={theme}>
-      <Stack.Navigator
-        screenOptions={{
-          headerTitleAlign: "center",
-          headerShadowVisible: false,
-        }}
+    <RecipesContext.Provider value={{ recipes, setRecipes }}>
+      <FeaturedRecipesContext.Provider
+        value={{ featuredRecipes, setFeaturedRecipes }}
       >
-        <Stack.Screen
-          name="Splash"
-          component={Splash}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          options={{ headerLeft: null, gestureEnabled: false }}
-          name="Home"
-          component={Home}
-        />
-        <Stack.Screen
-          options={{ headerLeft: (props) => <BackButton {...props} /> }}
-          name="Search"
-          component={Search}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+        <NavigationContainer theme={theme}>
+          <Stack.Navigator
+            screenOptions={{
+              headerTitleAlign: "center",
+              headerShadowVisible: false,
+            }}
+          >
+            <Stack.Screen
+              name="Splash"
+              component={Splash}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              options={{ headerLeft: null, gestureEnabled: false }}
+              name="Home"
+              component={Home}
+            />
+            <Stack.Screen
+              options={{ headerLeft: (props) => <BackButton {...props} /> }}
+              name="Search"
+              component={Search}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </FeaturedRecipesContext.Provider>
+    </RecipesContext.Provider>
   );
 }
 
