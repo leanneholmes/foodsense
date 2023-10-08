@@ -1,18 +1,33 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, SafeAreaView, View } from "react-native";
-import styles from "./styles";
-import Input from "../../components/Input";
-import Title from "../../components/Title";
-import Category from "../../components/Category";
-import RecipeCard from "../../components/RecipeCard";
-import Card from "../../components/Card";
 import { FeaturedRecipesContext, RecipesContext } from "../../../App";
+import Card from "../../components/Card";
+import Category from "../../components/Category";
+import Input from "../../components/Input";
+import RecipeCard from "../../components/RecipeCard";
+import Title from "../../components/Title";
+import styles from "./styles";
 
 const Home = ({ navigation }) => {
-  const { recipes } = useContext(RecipesContext);
+  const [tags, setTags] = useState([]);
+  const [selectedTag, setSelectedTag] = useState();
   const { featuredRecipes } = useContext(FeaturedRecipesContext);
-  console.log("Featured recipes from HOME", recipes);
-  console.log("Recipes from HOME ", featuredRecipes);
+  const { recipes } = useContext(RecipesContext);
+
+  useEffect(() => {
+    const tagsList = [];
+
+    recipes?.forEach((recipe) => {
+      recipe?.tags?.forEach((tag) => {
+        if (!tagsList?.includes(tag?.name)) {
+          tagsList?.push(tag?.name);
+        }
+      });
+    });
+
+    setTags(tagsList);
+  }, [recipes]);
+
   return (
     <SafeAreaView>
       <Input
@@ -22,52 +37,63 @@ const Home = ({ navigation }) => {
         onPress={() => navigation.navigate("Search")}
       />
       <View style={styles.container}>
-        <Title text="Featured recipes" />
+        <Title text="Featured Recipes" />
 
         <FlatList
-          style={{ marginHorizontal: -24 }}
           horizontal
           data={featuredRecipes}
-          keyExtractor={(item) => String(item)}
+          style={{ marginHorizontal: -24 }}
+          keyExtractor={(item) => String(item?.id)}
           showsHorizontalScrollIndicator={false}
           renderItem={({ item, index }) => (
             <RecipeCard
               style={index === 0 ? { marginLeft: 24 } : {}}
               title={item?.name}
-              author={{
-                name: "James Milner",
-                image:
-                  "https://www.stockvault.net//data/2013/09/14/147895/thumb16.jpg",
-              }}
               time={item?.cook_time_minutes}
+              image={item?.thumbnail_url}
+              rating={item?.user_ratings?.score}
+              author={
+                item?.credits?.length
+                  ? {
+                      name: item?.credits[0]?.name,
+                      image: item?.credits[0]?.image_url,
+                    }
+                  : null
+              }
             />
           )}
-        ></FlatList>
+        />
 
         <Category
-          categories={["All", "Trending"]}
-          selectedCategory="All"
-          onCategoryPress={() => {}}
+          categories={tags}
+          selectedCategory={selectedTag}
+          onCategoryPress={setSelectedTag}
         />
+
         <FlatList
-          style={{ marginHorizontal: -24 }}
           horizontal
-          data={[1, 2, 3]}
-          keyExtractor={(item) => String(item)}
+          data={recipes}
+          style={{ marginHorizontal: -24 }}
+          keyExtractor={(item) => String(item?.id)}
           showsHorizontalScrollIndicator={false}
-          renderItem={({ index }) => (
+          renderItem={({ item, index }) => (
             <Card
               style={index === 0 ? { marginLeft: 24 } : {}}
-              title="Steak with tomato sauce and bulgur rice."
-              author={{
-                name: "James Milner",
-                image:
-                  "https://www.stockvault.net//data/2013/09/14/147895/thumb16.jpg",
-              }}
-              time="20 mins"
+              title={item?.name}
+              servings={item?.num_servings}
+              image={item?.thumbnail_url}
+              rating={item?.user_ratings?.score}
+              author={
+                item?.credits?.length
+                  ? {
+                      name: item?.credits[0]?.name,
+                      image: item?.credits[0]?.image_url,
+                    }
+                  : null
+              }
             />
           )}
-        ></FlatList>
+        />
       </View>
     </SafeAreaView>
   );

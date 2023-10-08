@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { getRecipesList } from "./src/http";
+import "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet } from "react-native";
 import Splash from "./src/screens/Splash";
 import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
-import "react-native-gesture-handler";
 import { createStackNavigator } from "@react-navigation/stack";
 import Home from "./src/screens/Home";
 import Search from "./src/screens/Search";
+import { getRecipesList } from "./src/http";
 
 const Stack = createStackNavigator();
 export const RecipesContext = React.createContext();
@@ -30,15 +29,14 @@ const theme = {
 };
 
 export default function App() {
-  const [recipes, setRecipes] = useState();
-  const [featuredRecipes, setFeaturedRecipes] = useState();
+  const [recipes, setRecipes] = useState([]);
+  const [featuredRecipes, setFeaturedRecipes] = useState([]);
+
   useEffect(() => {
     (async () => {
-      const rec = await handleRecipesFetch("healthy", "1");
-      console.log("Recipes from APP.JS ", rec);
+      const rec = await handleRecipesFetch(null, "15");
       setRecipes(rec);
       const featuredRec = await handleRecipesFetch("halloween", "5");
-      console.log("Featured recipes", featuredRec);
       setFeaturedRecipes(featuredRec);
     })();
   }, []);
@@ -46,16 +44,17 @@ export default function App() {
   const handleRecipesFetch = async (tags, size) => {
     try {
       const recipes = await getRecipesList(tags, size);
-      setRecipes(recipes?.data?.results);
+      return recipes?.data?.results;
     } catch (e) {
-      console.log("Error fetching recipes ", e);
+      console.log("error fetching recipes :>> ", e);
     }
   };
+
   return (
-    <RecipesContext.Provider value={{ recipes, setRecipes }}>
-      <FeaturedRecipesContext.Provider
-        value={{ featuredRecipes, setFeaturedRecipes }}
-      >
+    <FeaturedRecipesContext.Provider
+      value={{ featuredRecipes, setFeaturedRecipes }}
+    >
+      <RecipesContext.Provider value={{ recipes, setRecipes }}>
         <NavigationContainer theme={theme}>
           <Stack.Navigator
             screenOptions={{
@@ -69,19 +68,19 @@ export default function App() {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              options={{ headerLeft: null, gestureEnabled: false }}
               name="Home"
               component={Home}
+              options={{ headerLeft: null, gestureEnabled: false }}
             />
             <Stack.Screen
-              options={{ headerLeft: (props) => <BackButton {...props} /> }}
               name="Search"
               component={Search}
+              options={{ headerLeft: (props) => <BackButton {...props} /> }}
             />
           </Stack.Navigator>
         </NavigationContainer>
-      </FeaturedRecipesContext.Provider>
-    </RecipesContext.Provider>
+      </RecipesContext.Provider>
+    </FeaturedRecipesContext.Provider>
   );
 }
 
@@ -89,7 +88,6 @@ const styles = StyleSheet.create({
   back: {
     width: 24,
     height: 24,
-    marginHorizontal: 16,
-    marginTop: 7,
+    margin: 16,
   },
 });
